@@ -1,11 +1,5 @@
-## MicaSense RedEdge-M bands:
-'Blue', 'Green', 'Red', 'NIR', 'Red edge'  
-'Blue-444', 'Green-531', 'Red-650', 'Red edge-705', 'Red edge-740'
-
 ## Installing Micasense library
-
 ### Install zbar
-
 ```ruby
 git clone https://github.com/mchehab/zbar   
 cd zbar && autoreconf -vfi  
@@ -14,7 +8,7 @@ make install
 export LD_LIBRARY_PATH=$HOME/projects/def-svassili/svassili/ODM/libzbar/lib  
 ```
 
-#### Install exiftool
+### Install exiftool
 ```ruby
 wget https://exiftool.org/Image-ExifTool-12.67.tar.gz
 tar -xf Image-ExifTool-12.67.tar.gz && cd Image-ExifTool-12.67
@@ -22,7 +16,7 @@ perl Makefile.PL && make
 export PATH=$PATH:$HOME/projects/def-svassili/svassili/ODM/Image-ExifTool-12.67
 ```
 
-#### Install GDAL in a virtual environment
+### Install GDAL in a virtual environment
 - On the Alliance systems python bindings are included in the gdal module, no installation is required.
 
 ```
@@ -35,7 +29,7 @@ module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
 pip install GDAL==$(gdal-config --version)
 ```
 
-#### Install Micasense imageprocessing
+### Install Micasense imageprocessing
 ```ruby
 git clone https://github.com/micasense/imageprocessing
 cd imageprocessing
@@ -44,6 +38,9 @@ pip install pysolar pyexiftool==0.4.13 pyzbar
 pip install --no-index .
 ```
 
+## MicaSense RedEdge-M bands:
+'Blue', 'Green', 'Red', 'NIR', 'Red edge'  
+'Blue-444', 'Green-531', 'Red-650', 'Red edge-705', 'Red edge-740'
 
 increase:  
 --feature-quality  
@@ -54,7 +51,7 @@ increase:
 
 https://community.opendronemap.org/t/hpc-scheduler-e-g-slurm-integration-for-clusterodm/3285/7
 
-## NodeODM 
+## Building NodeODM container 
 ```ruby
 apptainer build --fakeroot node_ODM.sif apptainer.def  
 apptainer overlay create --fakeroot --size 32000 ${SLURM_TMPDIR}/NodeODM.ovl
@@ -90,7 +87,7 @@ cd /var/www
 node index.js
 ```
 
-## ClusterODM
+## Building ClusterODM container
 ```ruby
 apptainer build --fakeroot ClusterODM.sif  ClusterODM.def
 apptainer overlay create --fakeroot --size 3000 ClusterODM.ovl
@@ -126,7 +123,7 @@ NODE ADD 10.82.90.29 3000
 NODE LIST
 ```
 
-## WebODM
+## Building WebODM container
 ```ruby
 sudo snap install docker  
 git clone https://github.com/OpenDroneMap/WebODM --config core.autocrlf=input --depth 1

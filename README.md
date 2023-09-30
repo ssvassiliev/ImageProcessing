@@ -1,4 +1,4 @@
-## Installing Micasense imageprocessing libraries
+## Installing Micasense image processing libraries
 ### Install zbar
 ```ruby
 git clone https://github.com/mchehab/zbar   

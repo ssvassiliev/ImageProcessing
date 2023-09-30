@@ -91,11 +91,14 @@ node index.js
 ```
 
 ## ClusterODM
+```ruby
 apptainer build --fakeroot ClusterODM.sif  ClusterODM.def
 apptainer overlay create --fakeroot --size 3000 ClusterODM.ovl
 apptainer run --fakeroot --overlay ClusterODM.ovl  ClusterODM.sif 
+```
 
----------- clusterodm.def ----------------
+```ruby
+--- File: clusterodm.def ---
 Bootstrap: docker
 From: node:lts
 
@@ -113,27 +116,29 @@ cat config-default.json.org | sed 's/"admin-pass": "",/"admin-pass": "12345!",/g
 cd /ClusterODM
 node index.js
 EOF
--------------------------------------------
+```
 
-Cluster ODM:
-
+Using cluster ODM CLI:
+```
 telnet nc11125 8080
 LOGIN 12345!
 NODE ADD 10.82.90.29 3000
 NODE LIST
+```
 
 ## WebODM
+```ruby
 sudo snap install docker  
 git clone https://github.com/OpenDroneMap/WebODM --config core.autocrlf=input --depth 1
 cd WebODM
 ./webodm.sh start 
+```
 
-## Multispectral images must be indexed
-/ODM/contrib/exif-binner/
+Currently ODM recognized images with up to 8 bands as multispectral.
 
-Currently limited to 8 bands.
-types.py can be patched: 
+Types.py can be patched for a 10-band camera: 
 
+```ruby
 sed 's/bands_count <= 8:/bands_count <= 10:/g' /code/opendm/types.py
-
+```
 

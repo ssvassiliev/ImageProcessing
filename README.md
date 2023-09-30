@@ -1,4 +1,4 @@
-## Installing Micasense library
+## Installing Micasense imageprocessing libraries
 ### Install zbar
 ```ruby
 git clone https://github.com/mchehab/zbar   
@@ -115,8 +115,8 @@ node index.js
 EOF
 ```
 
-Using cluster ODM CLI:
-```
+### Using cluster ODM CLI:
+```ruby
 telnet nc11125 8080
 LOGIN 12345!
 NODE ADD 10.82.90.29 3000

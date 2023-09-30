@@ -23,7 +23,7 @@ export PATH=$PATH:$HOME/projects/def-svassili/svassili/ODM/Image-ExifTool-12.67
 module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
 ```
 
-- On other systems first install gdal, then install GDAL in the virtual environment:
+- On other systems first install GDAL on your system, then install python module:
 
 ```
 pip install GDAL==$(gdal-config --version)

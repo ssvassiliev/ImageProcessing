@@ -45,20 +45,23 @@ pip install --no-index .
 ```
 
 
-increase: 
---feature-quality
---min-num-features
---matcher-neighbors 
---matcher-distance 
---min-num-features 60000
+increase:  
+--feature-quality  
+--min-num-features  
+--matcher-neighbors   
+--matcher-distance   
+--min-num-features 60000  
 
 https://community.opendronemap.org/t/hpc-scheduler-e-g-slurm-integration-for-clusterodm/3285/7
 
 ## NodeODM 
+```ruby
 apptainer build --fakeroot node_ODM.sif apptainer.def  
 apptainer overlay create --fakeroot --size 32000 ${SLURM_TMPDIR}/NodeODM.ovl
 apptainer run --fakeroot --overlay NodeODM.ovl NodeODM.sif
+```
 
+```ruby
 ------- nodeodm.def -------
 Bootstrap: docker
 From: opendronemap/odm:latest
@@ -86,7 +89,7 @@ npm install --production && mkdir -p tmp
 cd /var/www
 node index.js
 ----------------------------------------
-
+```
 
 ## ClusterODM
 apptainer build --fakeroot ClusterODM.sif  ClusterODM.def

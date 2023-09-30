@@ -15,27 +15,34 @@ export LD_LIBRARY_PATH=$HOME/projects/def-svassili/svassili/ODM/libzbar/lib
 ```
 
 #### Install exiftool
+```ruby
 wget https://exiftool.org/Image-ExifTool-12.67.tar.gz
 tar -xf Image-ExifTool-12.67.tar.gz && cd Image-ExifTool-12.67
 perl Makefile.PL && make
 export PATH=$PATH:$HOME/projects/def-svassili/svassili/ODM/Image-ExifTool-12.67
+```
 
 #### Install GDAL in a virtual environment
 - On the Alliance systems python bindings are included in the gdal module, no installation is required.
 
-    ```module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1```
+```
+module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
+```
 
 - On other systems first install gdal, then install GDAL in the virtual environment:
 
-    ```pip install GDAL==$(gdal-config --version)```
+```
+pip install GDAL==$(gdal-config --version)
+```
 
 #### Install Micasense imageprocessing
+```ruby
 git clone https://github.com/micasense/imageprocessing
 cd imageprocessing
 module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
 pip install pysolar pyexiftool==0.4.13 pyzbar
 pip install --no-index .
-
+```
 
 
 increase: 

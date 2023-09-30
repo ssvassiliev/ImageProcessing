@@ -62,7 +62,7 @@ apptainer run --fakeroot --overlay NodeODM.ovl NodeODM.sif
 ```
 
 ```ruby
-------- nodeodm.def -------
+--- File: nodeodm.def ---
 Bootstrap: docker
 From: opendronemap/odm:latest
 
@@ -88,7 +88,6 @@ npm install --production && mkdir -p tmp
 /bin/bash <<EOF
 cd /var/www
 node index.js
-----------------------------------------
 ```
 
 ## ClusterODM

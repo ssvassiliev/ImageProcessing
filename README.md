@@ -1,15 +1,18 @@
 ## MicaSense RedEdge-M bands:
-'Blue', 'Green', 'Red', 'NIR', 'Red edge'
+'Blue', 'Green', 'Red', 'NIR', 'Red edge'  
 'Blue-444', 'Green-531', 'Red-650', 'Red edge-705', 'Red edge-740'
 
 ## Installing Micasense library
 
 ### Install zbar
-git clone https://github.com/mchehab/zbar 
-cd zbar && autoreconf -vfi
-./configure --prefix=$HOME/projects/def-svassili/svassili/ODM/libzbar
-make install
-export LD_LIBRARY_PATH=$HOME/projects/def-svassili/svassili/ODM/libzbar/lib
+
+```ruby
+git clone https://github.com/mchehab/zbar   
+cd zbar && autoreconf -vfi  
+./configure --prefix=$HOME/projects/def-svassili/svassili/ODM/libzbar  
+make install  
+export LD_LIBRARY_PATH=$HOME/projects/def-svassili/svassili/ODM/libzbar/lib  
+```
 
 #### Install exiftool
 wget https://exiftool.org/Image-ExifTool-12.67.tar.gz

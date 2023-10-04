@@ -42,8 +42,9 @@ pip install GDAL==$(gdal-config --version)
 git clone https://github.com/micasense/imageprocessing
 cd imageprocessing
 module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
-pip install pysolar pyexiftool==0.4.13 pyzbar
+pip install pysolar pyexiftool==0.4.13 pyzbar rawpy
 pip install --no-index .
+cd ..
 ```
 ### Run Panels.py
 module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1

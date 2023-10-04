@@ -1,30 +1,38 @@
+
 ## Installing Micasense image processing libraries
+### Create and activate a python virtual environment
+
+module load python/3.10.2
+virtualenv env-micasense
+source env-micasense/bin/activate
+
 ### Install zbar
 ```ruby
+LIBZBAR_INSTALL_DIR=$HOME/projects/def-svassili/svassili/ODM/libzbar
 git clone https://github.com/mchehab/zbar   
 cd zbar && autoreconf -vfi  
-./configure --prefix=$HOME/projects/def-svassili/svassili/ODM/libzbar  
+./configure --prefix=${LIBZBAR_INSTALL_DIR} --without-dbus 
 make install  
-export LD_LIBRARY_PATH=$HOME/projects/def-svassili/svassili/ODM/libzbar/lib  
+cd ..
+export LD_LIBRARY_PATH=${LIBZBAR_INSTALL_DIR}/lib 
 ```
 
 ### Install exiftool
 ```ruby
 wget https://exiftool.org/Image-ExifTool-12.67.tar.gz
 tar -xf Image-ExifTool-12.67.tar.gz && cd Image-ExifTool-12.67
-perl Makefile.PL && make
+perl Makefile.PL 
+make
+cd ..
 export PATH=$PATH:$HOME/projects/def-svassili/svassili/ODM/Image-ExifTool-12.67
 ```
 
 ### Install GDAL in a virtual environment
-- On the Alliance systems python bindings are included in the gdal module, no installation is required.
-
+- On the Alliance systems python bindings are included in the GDAL module, no installation is required.
 ```
 module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
 ```
-
-- On other systems first install GDAL on your system, then install python module:
-
+- On other systems first install GDAL, then install python module:
 ```
 pip install GDAL==$(gdal-config --version)
 ```
@@ -37,6 +45,12 @@ module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
 pip install pysolar pyexiftool==0.4.13 pyzbar
 pip install --no-index .
 ```
+### Run Panels.py
+module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
+source env-micasense/bin/activate
+export PATH=$PATH:$HOME/projects/def-svassili/svassili/ODM/Image-ExifTool-12.67
+export LD_LIBRARY_PATH=$HOME/projects/def-svassili/svassili/ODM/libzbar/lib
+python Panels.py
 
 ## MicaSense RedEdge-M bands:
 'Blue', 'Green', 'Red', 'NIR', 'Red edge'  
@@ -138,4 +152,8 @@ Types.py can be patched for a 10-band camera:
 ```ruby
 sed 's/bands_count <= 8:/bands_count <= 10:/g' /code/opendm/types.py
 ```
+
+1. Build sandbox
+2. Edit types.py
+3. Build production image from sandbox
 

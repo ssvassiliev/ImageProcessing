@@ -7,6 +7,7 @@
 import os, glob
 from micasense.image import Image
 from micasense.panel import Panel
+import micasense.plotutils as plotutils
 
 imagePath = "/home/svassili/projects/def-svassili/svassili/ODM/panels"
 imageFile='IMG_0000_7.tiff'
@@ -27,5 +28,5 @@ print("Standard Deviation: {}".format(std))
 print("Panel Pixel Count: {}".format(num))
 print("Saturated Pixel Count: {}".format(sat_count))
 
-panel.plot();
+fig = plotutils.plotwithcolorbar(img.raw(), title='Raw image values with colorbar')
 

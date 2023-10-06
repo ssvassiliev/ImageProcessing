@@ -9,24 +9,22 @@ from micasense.image import Image
 from micasense.panel import Panel
 import micasense.plotutils as plotutils
 
-imagePath = "/home/svassili/projects/def-svassili/svassili/ODM/panels"
-imageFile='IMG_0000_7.tiff'
+images = "/gpfs/project/6033915/svassili/ODM/ImageProcessing/data/panels/*"
 
-imageName = os.path.join(imagePath,imageFile)
-img = Image(imageName)
-panel = Panel(img)
+for i in  sorted(glob.glob(images)):
+    img = Image(i)
+    panel = Panel(img)
 
-if not panel.panel_detected():
-    raise IOError("Panel Not Detected!")
+    print(f"\nFile: {i}")
+    if not panel.panel_detected():
+        print("Panel Not Detected!")
+    else:
+        print("Detected panel serial: {}".format(panel.serial)) 
+        mean, std, num, sat_count = panel.raw()
+        print("Extracted Panel Statistics:")
+        print("Mean: {}".format(mean))
+        print("Standard Deviation: {}".format(std))
+        print("Panel Pixel Count: {}".format(num))
+        print("Saturated Pixel Count: {}".format(sat_count))
 
-print("Detected panel serial: {}".format(panel.serial))
-mean, std, num, sat_count = panel.raw()
-print(f"File: {imageFile}")
-print("Extracted Panel Statistics:")
-print("Mean: {}".format(mean))
-print("Standard Deviation: {}".format(std))
-print("Panel Pixel Count: {}".format(num))
-print("Saturated Pixel Count: {}".format(sat_count))
-
-fig = plotutils.plotwithcolorbar(img.raw(), title='Raw image values with colorbar')
 

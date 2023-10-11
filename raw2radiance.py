@@ -4,7 +4,7 @@ import micasense.plotutils as plotutils
 import cv2
 import matplotlib.pyplot as plt
 
-imageName="../images/IMG_0001_1.tif" 
+imageName="data/images/IMG_0001_6.tif" 
 # get image metadata
 meta = metadata.Metadata(imageName)
 imageRaw=cv2.imread(imageName, cv2.IMREAD_UNCHANGED)

@@ -9,9 +9,9 @@ from micasense.image import Image
 from micasense.panel import Panel
 import micasense.plotutils as plotutils
 
-images = "/gpfs/project/6033915/svassili/ODM/ImageProcessing/data/panels/*"
+imagePath = "/home/svassili/projects/def-svassili/svassili/ODM/ImageProcessing/data/panels"
 
-for i in  sorted(glob.glob(images)):
+for i in  sorted(glob.glob(os.path.join(imagePath,'*.*'))):
     img = Image(i)
     panel = Panel(img)
 

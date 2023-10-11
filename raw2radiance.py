@@ -3,6 +3,7 @@ import micasense.utils as msutils
 import micasense.plotutils as plotutils
 import cv2
 import matplotlib.pyplot as plt
+from PIL import Image
 
 imageName="data/images/IMG_0001_6.tif" 
 # get image metadata
@@ -27,8 +28,9 @@ print('Flight ID: {0}'.format(meta.get_item('XMP:FlightId')))
 print('Focal Length: {0}'.format(meta.get_item('XMP:FocalLength')))
 
 radianceImage, L, V, R = msutils.raw_image_to_radiance(meta, imageRaw)
-plotutils.plotwithcolorbar(V,'Vignette Factor');
-plotutils.plotwithcolorbar(R,'Row Gradient Factor');
-plotutils.plotwithcolorbar(V*R,'Combined Corrections');
-plotutils.plotwithcolorbar(L,'Vignette and row gradient corrected raw values');
-plotutils.plotwithcolorbar(radianceImage,'All factors applied and scaled to radiance');
+#plotutils.plotwithcolorbar(V,'Vignette Factor');
+#plotutils.plotwithcolorbar(R,'Row Gradient Factor');
+#plotutils.plotwithcolorbar(V*R,'Combined Corrections');
+#plotutils.plotwithcolorbar(L,'Vignette and row gradient corrected raw values');
+#plotutils.plotwithcolorbar(radianceImage,'All factors applied and scaled to radiance');
+cv2.imwrite('out.tif', radianceImage)

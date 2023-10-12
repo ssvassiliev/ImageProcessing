@@ -98,7 +98,7 @@ for i in range(first_image,last_image):
             linestr += '\n' # when writing in text mode, the write command will convert to os.linesep
 
             csvfile.writelines(linestr)
-            cv2.imwrite(outputImageFilename, imageCap.images[i-1].undistorted_reflectance())
+            cv2.imwrite(outputImageFilename, imageCap.images[i-1].undistorted_reflectance().astype('float32'))
             imageCap.clear_image_data()
 
 csvfile.close()

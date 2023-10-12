@@ -1,17 +1,22 @@
-import os, glob, cv2, subprocess
+import os, glob, cv2, subprocess, argparse
 import numpy as np
 import micasense.capture as capture
 
-# Usage: undistort \  
-# -i image path         [data/raw_images] \
-# -o output path        [data/images] \
-# -p panel path         [data/panels] \
-# -e csv path           [data/images] \
-# -c csv filename       [log.csv] \
-# -b image file prefix  [IMG_] \
-# -q id of the panels   [0] \
-# -s start image        [1] \
-# -e end image          [100] \ 
+parser = argparse.ArgumentParser(
+    prog='undistort',
+    description='Converts raw images to reflectance using DLS and Panels',  
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter  
+)
+parser.add_argument('-i', default='data/raw_images', type=str, help="Path to images")
+parser.add_argument('-p', default='data/panels', type=str, help="Path to panel images")
+parser.add_argument('-t', default='data/images', type=str, help="Output path")
+parser.add_argument('-m', default='data/images', type=str, help="Path to CSV metadata file")
+parser.add_argument('-o', default='log.csv', type=str, help="Name of CSV file")
+parser.add_argument('-I', default='IMG_', type=str, help="Name of image files")
+parser.add_argument('-P', default=0, type=int, help="File sequence number of the panels")
+parser.add_argument('-s', default=1, type=int, help="File sequence number of the first image")
+parser.add_argument('-e', default=100, type=int, help="File sequence number of the last image")
+args=parser.parse_args()
 
 def decdeg2dms(dd):
    is_positive = dd >= 0
@@ -29,17 +34,17 @@ GPSAltitude,GPSAltitudeRef,\
 FocalLength,\
 XResolution,YResolution,ResolutionUnits\n"
 
-imagePath = "data/raw_images"
-outputPath="data/images"
-panelPath = "data/panels"
-csvPath = "data/images"
-csvName = os.path.join(csvPath,'log.csv')
+imagePath = args.i
+panelPath = args.p
+outputPath=args.t
+csvPath = args.m
+csvName = os.path.join(csvPath, args.o)
 
-prefix="IMG_"
-panel_id=3
+prefix=args.I
+panel_id=args.P
 panelBasename=f'{prefix}{panel_id:04n}_'
-first_image=4
-last_image=6
+first_image=args.s
+last_image=args.e
 
 # Write metadata header
 csvfile = open(csvName, 'w')
@@ -95,8 +100,9 @@ for i in range(first_image,last_image):
             cv2.imwrite(outputImageFilename, imageCap.images[i-1].undistorted_reflectance())
             imageCap.clear_image_data()
 
-#Inject metadata from CSV
 csvfile.close()
+
+#Inject metadata from CSV
 print("Updating metadata ..")
 cmd=f'exiftool -csv={csvName} -overwrite_original {outputPath}'
 subprocess.run(cmd, shell=True)

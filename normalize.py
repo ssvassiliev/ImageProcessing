@@ -62,7 +62,7 @@ print('Undistorting captures:')
 for i in range(first_image,last_image):
     imageBasename=f'{prefix}{i:04n}'
     if os.path.isfile(os.path.join(imagePath,f'{imageBasename}_1.tif')):
-        print(f'{imageBasename}')
+        print(f'{i} ', end='', flush=True)
 
         imageNames = glob.glob(os.path.join(imagePath,f'{imageBasename}_*.tif'))
         imageCap = capture.Capture.from_filelist(imageNames)
@@ -104,7 +104,7 @@ for i in range(first_image,last_image):
 csvfile.close()
 
 #Inject metadata from CSV
-print("Updating metadata ..")
+print("\nUpdating metadata ..")
 cmd=f'exiftool -csv={csvName} -overwrite_original {outputPath}'
 subprocess.run(cmd, shell=True)
 

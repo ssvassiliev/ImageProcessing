@@ -93,18 +93,23 @@ for i in range(first_image,last_image):
             linestr += imageCap.utc_time().strftime("%Y:%m:%d,%H:%M:%S,")
             linestr += '"{:d} deg {:d}\' {:.2f}"" {}",{},'.format(int(latdeg),int(latmin),latsec,latdir[0],latdir)
             linestr += '"{:d} deg {:d}\' {:.2f}"" {}",{},{:.1f} m Above Sea Level,Above Sea Level,'.format(int(londeg),int(lonmin),lonsec,londir[0],londir,alt)
-            linestr += '{}'.format(imageCap.images[0].focal_length)
-            linestr += '{},{},mm'.format(resolution,resolution)
+            linestr += '{},'.format(imageCap.images[0].focal_length)
+            linestr += '{},{},mm'.format(resolution[0],resolution[1])
+
             linestr += '\n' # when writing in text mode, the write command will convert to os.linesep
 
             csvfile.writelines(linestr)
             cv2.imwrite(outputImageFilename, imageCap.images[i-1].undistorted_reflectance().astype('float32'))
+            cmd=f'exiftool -config /project/def-svassili/svassili/ODM/ImageProcessing/pix4d.config -XMP-camera:BandName="{imageCap.band_names()[i-1]}" {outputImageFilename}'
+            print(cmd)
+            subprocess.run(cmd, shell=True)
             imageCap.clear_image_data()
 
 csvfile.close()
 
 #Inject metadata from CSV
-print("\nUpdating metadata ..")
+print("\nUpdating metadata ..", flush=True)
 cmd=f'exiftool -csv={csvName} -overwrite_original {outputPath}'
+#exiftool -config pix4d.config -XMP-camera:BandName="Red" data/images/cIMG_0008_2.tif
 subprocess.run(cmd, shell=True)
 

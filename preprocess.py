@@ -16,6 +16,7 @@ parser.add_argument('-f', '--filename', default='IMG_', type=str, help="Name of 
 parser.add_argument('-n', '--panelId', default=0, type=int, help="File sequence number of the panels")
 parser.add_argument('-s', '--first', default=1, type=int, help="File sequence number of the first image")
 parser.add_argument('-e', '--last', default=100, type=int, help="File sequence number of the last image")
+parser.add_argument('-r', '--irradiance', type=float, nargs='+', help="List of panel irradiances")
 parser.add_argument('-a', '--albedo', type=float, nargs='+', help="List of panel albedos")
 args=parser.parse_args()
 
@@ -37,10 +38,11 @@ panelBasename=f'{prefix}{panel_id:04n}_'
 first_image=args.first
 last_image=args.last
 
-# Read panels
+# Read panels only if irradiances are not provided
 print(f'Loading panels: {panelBasename}*.tif ')
 panelNames = glob.glob(os.path.join(panelPath, f'{panelBasename}*.tif'))
 panelCap = capture.Capture.from_filelist(panelNames)
+
 if args.albedo is not None:
     panel_reflectance_by_band = args.albedo
 else:
@@ -48,7 +50,14 @@ else:
 print(f'Panel albedos:') 
 for i in panel_reflectance_by_band:
     print(f'{i:.4f} ', end='')
-panel_irradiance = panelCap.panel_irradiance(panel_reflectance_by_band)  
+
+if args.irradiance is not None:
+    panel_irradiance = args.irradiance
+else:
+    panel_irradiance = panelCap.panel_irradiance(panel_reflectance_by_band)  
+print(f'\nPanel irradiances:') 
+for i in panel_irradiance:
+    print(f'{i:.4f} ', end='')
 
 print('\nCalibrating images:')
 c=0

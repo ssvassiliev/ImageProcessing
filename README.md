@@ -1,14 +1,21 @@
 
 ## Installing Micasense image processing libraries
+### Create directories where you want to install packages
+```ruby
+INSTALL_DIR=/project/def-mbarbeau/gnorris/MicaSense
+LIBZBAR_INSTALL_DIR=${INSTALL_DIR}/libzbar
+mkdir -p ${INSTALL_DIR}
+cd ${INSTALL_DIR}
+```
 ### Create and activate a python virtual environment
-
+```ruby
 module load python/3.10.2
 virtualenv env-micasense
 source env-micasense/bin/activate
+```
 
 ### Install zbar
 ```ruby
-LIBZBAR_INSTALL_DIR=$HOME/projects/def-svassili/svassili/ODM/libzbar
 git clone https://github.com/mchehab/zbar   
 cd zbar && autoreconf -vfi  
 ./configure --prefix=${LIBZBAR_INSTALL_DIR} --without-dbus 
@@ -24,7 +31,7 @@ tar -xf Image-ExifTool-12.67.tar.gz && cd Image-ExifTool-12.67
 perl Makefile.PL 
 make
 cd ..
-export PATH=$PATH:$HOME/projects/def-svassili/svassili/ODM/Image-ExifTool-12.67
+export PATH=$PATH:${INSTALL_DIR}/Image-ExifTool-12.67
 ```
 
 ### Install GDAL in a virtual environment
@@ -37,7 +44,7 @@ module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
 pip install GDAL==$(gdal-config --version)
 ```
 
-### Install Micasense imageprocessing
+### Install MicaSense imageprocessing
 ```ruby
 git clone https://github.com/micasense/imageprocessing
 cd imageprocessing
@@ -45,26 +52,20 @@ module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
 pip install pysolar pyexiftool==0.4.13 pyzbar
 pip install --no-index .
 ```
-### Run Panels.py
-cd /home/svassili/projects/def-svassili/svassili/ODM/ImageProcessing
+### Run check_panels.py
+```ruby
 module load gcc/9.3.0 opencv/4.8.0 gdal/3.5.1
+INSTALL_DIR=/home/svassili/projects/def-svassili/svassili/ODM
+cd ${NSTALL_DIR}/ImageProcessing
 source ../env-micasense/bin/activate
-export PATH=$PATH:$HOME/projects/def-svassili/svassili/ODM/Image-ExifTool-12.67
-export LD_LIBRARY_PATH=$HOME/projects/def-svassili/svassili/ODM/libzbar/lib
-python Panels.py
+export PATH=$PATH:${INSTALL_DIR}/Image-ExifTool-12.67
+export LD_LIBRARY_PATH=${INSTALL_DIR}/libzbar/lib
+python check_panels.py
+```
 
 ## MicaSense RedEdge-M bands:
 'Blue', 'Green', 'Red', 'NIR', 'Red edge'  
 'Blue-444', 'Green-531', 'Red-650', 'Red edge-705', 'Red edge-740'
-
-increase:  
---feature-quality  
---min-num-features  
---matcher-neighbors   
---matcher-distance   
---min-num-features 60000  
-
-https://community.opendronemap.org/t/hpc-scheduler-e-g-slurm-integration-for-clusterodm/3285/7
 
 ## Building NodeODM container 
 ```ruby

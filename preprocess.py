@@ -88,7 +88,7 @@ for i in range(first_image,last_image):
 
         for i in range(1,imageCap.num_bands+1):
             outputImageFilename = os.path.join(outputPath, f'c{imageBasename}_{i}.tif')
-            cmd  = f'exiftool -config {args.config} -q '
+            cmd  = f'exiftool -config {args.config} -q -overwrite_original '
             cmd += f'-XMP-camera:BandName="{imageCap.band_names()[i-1]}" '
             cmd += f'-GPSDateStamp={imageCap.utc_time().strftime("%Y:%m:%d")} '
             cmd += f'-GPSTimeStamp={imageCap.utc_time().strftime("%H:%M:%S")} '

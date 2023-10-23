@@ -27,6 +27,7 @@ countNoQR=0
 failed=[]
 panels_albedo=[]
 panels_irradiance = []
+corr_fact = []
 
 for i in  range(0,args.nbands):
     panelName=f'{imagePath}/{args.filename}{str(i+1)}.tif'
@@ -39,6 +40,7 @@ for i in  range(0,args.nbands):
         print("Error: Panel not detected!")
         panels_albedo.append(np.nan)
         panels_irradiance.append(np.nan)
+        corr_fact.append(np.nan)
         failed.append(os.path.basename(panelName))
         countFailed += 1
         countNoQR += 1
@@ -47,6 +49,7 @@ for i in  range(0,args.nbands):
         print("Error: Cannot read albedo!")
         panels_albedo.append(np.nan)
         panels_irradiance.append(np.nan)
+        corr_fact.append(np.nan)
         failed.append(os.path.basename(panelName))
         countNoAlbedo += 1
         countFailed += 1
@@ -58,8 +61,13 @@ for i in  range(0,args.nbands):
         print(f'Panel Pixel Count: {num}')
         print(f'Saturated Pixel Count: {sat_count}')
         print(f'Panel Mean Irradiance: {panel.irradiance_mean(panel.panel_albedo):.4f}') 
+        print(f'Panel Albedo: {panel.panel_albedo:.4f}') 
         panels_albedo.append(panel.panel_albedo)
-        panels_irradiance.append(panel.irradiance_mean(panel.panel_albedo))    
+        panels_irradiance.append(panel.irradiance_mean(panel.panel_albedo)) 
+        corr=panel.reflectance_mean()/panel.panel_albedo
+        corr_fact.append(corr)
+        img.reflectance(img.horizontal_irradiance * corr ) 
+        print(f'Corrected Mean Reflectance: {panel.reflectance_mean():.4f}') 
         countOK += 1
 
 print("\n")
@@ -75,11 +83,14 @@ if countFailed == 0:
     print("All panels OK")
 print("\n")
 
-print("Reflectance:")
+print("Albedo:")
 for i in panels_albedo:
     print(f'{i:.4f}, ', end='')
 print("\nIrradiance:")
 for i in panels_irradiance:
+    print(f'{i:.4f}, ', end='')
+print("\nIrradiance correction factors:")
+for i in corr_fact:
     print(f'{i:.4f}, ', end='')
 print("\n")
 
